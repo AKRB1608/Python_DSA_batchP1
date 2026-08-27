@@ -5,110 +5,75 @@ print(hex(id(arr[2])))
 print(hex(id(arr[3]))) 
 '''''
 class Node:
-    def __init__(self, value):
-        self.value = value
+    def __init__(self, data):
+        self.data = data
         self.next = None
 
 
-node1 = Node(10)
-node2 = Node(20)
-node3 = Node(30)
+class LinkedList:
+    def __init__(self):
+        self.head = None
 
-node1.next = node2
-node2.next = node3
+    def insert(self, data):
+        new = Node(data)
 
+        if self.head is None:
+            self.head = new
+            return
 
-def display(head):
-    current = head
+        temp = self.head
+        while temp.next:
+            temp = temp.next
 
-    while current:
-        print(current.value, end=" -> ")
-        current = current.next
+        temp.next = new
 
-    print("None")
+    def display(self):
+        temp = self.head
+        while temp:
+            print(temp.data, end=" -> ")
+            temp = temp.next
+        print("None")
 
+    def delete(self, data):
+        if self.head is None:
+            return
 
-def insert_beginning(head, value):
-    new_node = Node(value)
-    new_node.next = head
-    return new_node
+        if self.head.data == data:
+            self.head = self.head.next
+            return
 
+        temp = self.head
+        while temp.next:
+            if temp.next.data == data:
+                temp.next = temp.next.next
+                return
+            temp = temp.next
 
-def insert_end(head, value):
-    new_node = Node(value)
+    def pop(self):
+        if self.head is None:
+            return
 
-    if head is None:
-        return new_node
+        if self.head.next is None:
+            self.head = None
+            return
 
-    current = head
+        temp = self.head
+        while temp.next.next:
+            temp = temp.next
 
-    while current.next:
-        current = current.next
-
-    current.next = new_node
-    return head
-
-
-def search(head, value):
-    current = head
-
-    while current:
-        if current.value == value:
-            return True
-        current = current.next
-
-    return False
-
-
-def delete(head, value):
-    if head is None:
-        return None
-
-    if head.value == value:
-        return head.next
-
-    current = head
-
-    while current.next:
-        if current.next.value == value:
-            current.next = current.next.next
-            return head
-
-        current = current.next
-
-    return head
+        temp.next = None
 
 
-def update(head, old_value, new_value):
-    current = head
+l = LinkedList()
 
-    while current:
-        if current.value == old_value:
-            current.value = new_value
-            return head
+l.insert(10)
+l.insert(20)
+l.insert(30)
 
-        current = current.next
+l.display()
 
-    return head
+l.delete(20)
+l.display()
 
-
-head = node1
-
-display(head)
-
-head = insert_beginning(head, 5)
-display(head)
-
-head = insert_end(head, 40)
-display(head)
-
-print(search(head, 30))
-
-head = update(head, 20, 25)
-display(head)
-
-head = delete(head, 30)
-display(head)
-
-head = delete(head, 5)
-display(head)
+l.pop()
+l.display()
