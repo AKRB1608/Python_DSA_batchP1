@@ -57,67 +57,116 @@ class Node:
         self.next = None
 
 
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
 class CircularLinkedList:
     def __init__(self):
         self.head = None
-    def insert(self, data):
+
+    # Add node at the end
+    def add(self, data):
         new = Node(data)
+
         if self.head is None:
             self.head = new
             new.next = self.head
             return
+
         temp = self.head
         while temp.next != self.head:
             temp = temp.next
+
         temp.next = new
         new.next = self.head
+
+    # Remove a specific value
+    def remove(self, data):
+        if self.head is None:
+            return None
+
+        # Remove head
+        if self.head.data == data:
+
+            # Only one node
+            if self.head.next == self.head:
+                self.head = None
+                return data
+
+            temp = self.head
+
+            while temp.next != self.head:
+                temp = temp.next
+
+            self.head = self.head.next
+            temp.next = self.head
+
+            return data
+
+        # Remove middle/last node
+        temp = self.head
+
+        while temp.next != self.head:
+            if temp.next.data == data:
+                value = temp.next.data
+                temp.next = temp.next.next
+                return value
+
+            temp = temp.next
+
+        return None
+
+    # Remove last node and return its value
+    def pop(self):
+        if self.head is None:
+            return None
+
+        # Only one node
+        if self.head.next == self.head:
+            value = self.head.data
+            self.head = None
+            return value
+
+        temp = self.head
+
+        while temp.next.next != self.head:
+            temp = temp.next
+
+        value = temp.next.data
+        temp.next = self.head
+
+        return value
+
+    # Display list
     def display(self):
         if self.head is None:
+            print("Empty")
             return
+
         temp = self.head
+
         while True:
             print(temp.data, end=" -> ")
             temp = temp.next
+
             if temp == self.head:
                 break
+
         print("Head")
-    def delete(self, data):
-        if self.head is None:
-            return
-        if self.head.data == data:
-            if self.head.next == self.head:
-                self.head = None
-                return
-            temp = self.head
-            while temp.next != self.head:
-                temp = temp.next
-            self.head = self.head.next
-            temp.next = self.head
-            return
-        temp = self.head
-        while temp.next != self.head:
-            if temp.next.data == data:
-                temp.next = temp.next.next
-                return
-            temp = temp.next
-    def pop(self):
-        if self.head is None:
-            return
-        if self.head.next == self.head:
-            self.head = None
-            return
-        temp = self.head
-        while temp.next.next != self.head:
-            temp = temp.next
-        temp.next = self.head
-# Example
 c = CircularLinkedList()
-c.insert(10)
-c.insert(20)
-c.insert(30)
-c.insert(40)
+
+c.add(10)
+c.add(20)
+c.add(30)
+c.add(40)
+
 c.display()
-c.delete(20)
+
+print("Removed:", c.remove(20))
 c.display()
-c.pop()
+
+print("Popped:", c.pop())
 c.display()
